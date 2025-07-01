@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Fetching data from BackEnd</h1>
+    <button onclick="fetchDataFromBE()">Fetch Message</button>
+
+    <h2>Message from backend:</h2>
+    <p id="msg">Click to load!</p>
+
+    <script>
+        function fetchDataFromBE() {
+            fetch('http://127.0.0.1:5000/api')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("msg").innerText = data.msg
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+    </script>
+</body>
+</html>
