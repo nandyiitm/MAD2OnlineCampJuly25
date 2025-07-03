@@ -1,11 +1,17 @@
 from flask import Flask, render_template
 from flask_restful import Resource, Api
+from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
 
 CORS(app)
+
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
 
 # initializing data base with app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -15,9 +21,11 @@ db.init_app(app)
 
 # adding resources to endpoints
 
-from controllers import HelloWorld
+from controllers import LoginResource, RegisterResource, QuoteResource
 
-api.add_resource(HelloWorld, '/api')
+api.add_resource(LoginResource, '/login')
+api.add_resource(RegisterResource, '/register')
+api.add_resource(QuoteResource, '/quotes', '/quotes/<quote_id>')
 
 
 if __name__ == "__main__":
