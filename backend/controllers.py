@@ -7,6 +7,7 @@ from models import db, User, Quote
 
 class LoginResource(Resource):
     def post(self):
+        print('entered')
         data = request.get_json()
         email = data.get('email', None)
         password = data.get('password', None)
@@ -16,9 +17,9 @@ class LoginResource(Resource):
         if not user:
             return {'msg': "User doesn't exists!"}, 400
         if user.password != password:
-            return {'message': "Invalid credentials"}, 400
+            return {'msg': "Invalid credentials"}, 400
         token = create_access_token(identity=user.email)
-        return {'message': "Successfully Loggedin!", 'token': token}
+        return {'msg': "Successfully Loggedin!", 'token': token, 'user': user.to_dict()}
     
 class RegisterResource(Resource):
     def post(self):
