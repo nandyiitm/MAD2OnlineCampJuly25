@@ -21,12 +21,16 @@ db.init_app(app)
 
 # adding resources to endpoints
 
-from controllers import LoginResource, RegisterResource, QuoteResource
+from controllers import cache, LoginResource, RegisterResource, QuoteResource
 
 api.add_resource(LoginResource, '/login')
 api.add_resource(RegisterResource, '/register')
 api.add_resource(QuoteResource, '/quotes', '/quotes/<quote_id>')
 
+# initalize cache
+app.config['CACHE_TYPE'] = 'RedisCache'
+app.config['CACHE_REDIS_URL'] = 'redis://localhost:6379/0'
+cache.init_app(app)
 
 if __name__ == "__main__":
     with app.app_context():

@@ -1,6 +1,9 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_caching import Cache
+
+cache = Cache()
 
 from models import db, User, Quote
 
@@ -42,10 +45,16 @@ def is_admin():
         return False
     return True
 
+import time
+
 class QuoteResource(Resource):
 
-    @jwt_required()
+    # @jwt_required()
+    @cache.cached(timeout=30, key_prefix='quotes_cache')
     def get(self, quote_id=None):
+
+        time.sleep(10)
+
         if quote_id:
             quote = Quote.query.get(quote_id)
             if quote:
@@ -88,9 +97,12 @@ class QuoteResource(Resource):
         db.session.commit()
         return {'msg': "Quote information updated!", 'quote': quote.to_dict()}, 200
     
-    @jwt_required()
+    # @jwt_required()
     def delete(self, quote_id=None):
-        if not is_admin(): return {'message': 'Not authorized'}, 401
+
+        cache.delete('quotes_cache')
+
+        # if not is_admin(): return {'message': 'Not authorized'}, 401
 
         if not quote_id:
             return {'msg': "Quote id is required to delete!"}, 400
