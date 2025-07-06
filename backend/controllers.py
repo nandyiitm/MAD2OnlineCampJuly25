@@ -113,3 +113,17 @@ class QuoteResource(Resource):
         db.session.commit()
         return {'msg': "Quote has been delete!"}, 200
     
+class ReportGenerate(Resource):
+    def get(self):
+        
+        from celery_app import generate_csv
+
+        import os
+        cwd = os.getcwd()
+        staticPath = os.path.join(cwd, 'static')
+        os.makedirs(staticPath, exist_ok=True)
+        filePath = os.path.join(staticPath, 'report.csv')
+
+        generate_csv.delay([{'name':'mahesh','score':0}, {'name':'suresh', 'score':20}], filename=filePath)
+        
+        return {'msg': 'Generating file, please check later!', 'url': 'http://127.0.0.1:5000/static/report.csv'}

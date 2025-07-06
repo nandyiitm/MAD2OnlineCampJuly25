@@ -21,11 +21,12 @@ db.init_app(app)
 
 # adding resources to endpoints
 
-from controllers import cache, LoginResource, RegisterResource, QuoteResource
+from controllers import cache, LoginResource, RegisterResource, QuoteResource, ReportGenerate
 
 api.add_resource(LoginResource, '/login')
 api.add_resource(RegisterResource, '/register')
 api.add_resource(QuoteResource, '/quotes', '/quotes/<quote_id>')
+api.add_resource(ReportGenerate, '/generate_report')
 
 # initalize cache
 app.config['CACHE_TYPE'] = 'RedisCache'
