@@ -127,3 +127,13 @@ class ReportGenerate(Resource):
         generate_csv.delay([{'name':'mahesh','score':0}, {'name':'suresh', 'score':20}], filename=filePath)
         
         return {'msg': 'Generating file, please check later!', 'url': 'http://127.0.0.1:5000/static/report.csv'}
+
+class GraphResource(Resource):
+    def get(self):
+        # fetch data and find useful data to show summary of data
+
+        # use matplotlib to generate image with that data and store in static/graphs folder
+        # return {'msg': 'Generated graphs', 'url': '/static/graphs/admin.png'}
+
+        # or use char.js in fe and get data from this api call
+        return {'msg': 'data for graph', 'labels':['B1', 'B2', 'P3'], 'data': [100, 20, 10], 'label': '# of reservations in lots'}
